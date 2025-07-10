@@ -75,18 +75,14 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-skip-source-first-line = false
 line-ending = "auto"
 
 [tool.ruff.lint.isort]
 known-first-party = ["fitlog"]
 
 [tool.ty]
-check_untyped_defs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-strict_optional = true
-no_implicit_optional = true
+[tool.ty.environment]
+root = ["."]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
