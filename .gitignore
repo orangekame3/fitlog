@@ -1,0 +1,95 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# uv
+.python-version
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Google API credentials (重要: 絶対にコミットしない)
+fitlog/auth/client_secret.json
+fitlog/auth/token.json
+fitlog/auth/credentials.json
+
+# InfluxDB data
+influxdb-data/
+influxdb-config/
+
+# Grafana data
+grafana-data/
+grafana/provisioning/
+
+# Logs
+logs/
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# Cloudflare
+cloudflared/*.json
+cloudflared/cert.pem
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Test files
+test_data/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Task runner
+.task/

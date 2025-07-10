@@ -1,0 +1,216 @@
+version: '3'
+
+vars:
+  PROJECT_NAME: fitlog
+  PYTHON_FILES: "fitlog tests"
+  RUFF_CONFIG: "pyproject.toml"
+
+tasks:
+  default:
+    desc: "Default task - show available tasks"
+    cmds:
+      - task --list
+
+  # Environment setup
+  setup:
+    desc: "Initial project setup"
+    cmds:
+      - uv sync --dev
+      - echo "✅ Setup completed"
+
+  # Code quality management
+  lint:
+    desc: "Run code static analysis"
+    cmds:
+      - task: ruff-check
+      - task: type-check
+
+  fmt:
+    desc: "Format code"
+    cmds:
+      - task: ruff-format
+      - task: ruff-fix
+
+  ruff-check:
+    desc: "Check code with Ruff"
+    cmds:
+      - uv run ruff check {{.PYTHON_FILES}}
+
+  ruff-fix:
+    desc: "Auto-fix issues with Ruff"
+    cmds:
+      - uv run ruff check {{.PYTHON_FILES}} --fix
+
+  ruff-format:
+    desc: "Format code with Ruff"
+    cmds:
+      - uv run ruff format {{.PYTHON_FILES}}
+
+  type-check:
+    desc: "Run type checking with Ty"
+    cmds:
+      - uv run ty check {{.PYTHON_FILES}}
+
+  # Test related
+  test:
+    desc: "Run tests"
+    cmds:
+      - uv run pytest
+
+  test-cov:
+    desc: "Run tests with coverage"
+    cmds:
+      - uv run pytest --cov={{.PROJECT_NAME}} --cov-report=html --cov-report=term-missing
+
+  test-watch:
+    desc: "Watch files and run tests"
+    cmds:
+      - uv run pytest-watch
+
+  # Application execution
+  run:
+    desc: "Execute fitlog data fetching"
+    cmds:
+      - uv run fitlog-fetch
+
+  run-dry:
+    desc: "Execute fitlog data fetching in dry run mode"
+    cmds:
+      - uv run fitlog-fetch --dry-run
+
+  run-days:
+    desc: "Execute fitlog data fetching for specified days"
+    cmds:
+      - uv run fitlog-fetch --days {{.DAYS | default "7"}}
+
+  influx-test:
+    desc: "Test InfluxDB connection"
+    cmds:
+      - uv run fitlog-influx-test
+
+  # Docker related
+  docker-up:
+    desc: "Start services with Docker Compose"
+    cmds:
+      - docker compose up -d
+
+  docker-down:
+    desc: "Stop services with Docker Compose"
+    cmds:
+      - docker compose down
+
+  docker-logs:
+    desc: "Show Docker Compose logs"
+    cmds:
+      - docker compose logs -f
+
+  docker-status:
+    desc: "Check Docker Compose service status"
+    cmds:
+      - docker compose ps
+
+  # Development environment management
+  clean:
+    desc: "Clean temporary files and cache"
+    cmds:
+      - rm -rf __pycache__
+      - rm -rf .pytest_cache
+      - rm -rf .coverage
+      - rm -rf htmlcov
+      - rm -rf dist
+      - rm -rf build
+      - rm -rf *.egg-info
+      - find . -name "*.pyc" -delete
+      - find . -name "*.pyo" -delete
+      - echo "✅ Cleanup completed"
+
+  install:
+    desc: "Install dependencies"
+    cmds:
+      - uv sync
+
+  install-dev:
+    desc: "Install dependencies including dev dependencies"
+    cmds:
+      - uv sync --dev
+
+  # CI/CD related
+  ci:
+    desc: "Tasks to run in CI environment"
+    cmds:
+      - task: lint
+      - task: test-cov
+
+  pre-commit:
+    desc: "Pre-commit checks"
+    cmds:
+      - task: fmt
+      - task: lint
+      - task: test
+
+  # Log related
+  logs:
+    desc: "Show fitlog logs"
+    cmds:
+      - tail -f logs/fitlog_$(date +%Y%m%d).log
+
+  logs-all:
+    desc: "Show all log files"
+    cmds:
+      - find logs -name "*.log" -exec echo "=== {} ===" \; -exec cat {} \;
+
+  # Version management
+  version:
+    desc: "Show current version"
+    cmds:
+      - echo "Project: {{.PROJECT_NAME}}"
+      - uv --version
+      - uv run python --version
+
+  # Authentication related
+  auth-reset:
+    desc: "Reset Google authentication"
+    cmds:
+      - rm -f fitlog/auth/token.json
+      - echo "✅ Authentication token removed. Re-authentication required on next run."
+
+  # Configuration file generation
+  env-setup:
+    desc: "Generate environment configuration file"
+    cmds:
+      - |
+        if [ ! -f .env ]; then
+          cp .env.example .env
+          echo "✅ .env file created. Please edit the configuration."
+        else
+          echo "⚠️  .env file already exists."
+        fi
+
+  # Quick start
+  quickstart:
+    desc: "Project quick start"
+    cmds:
+      - task: setup
+      - task: env-setup
+      - task: docker-up
+      - echo "🚀 Quick start completed!"
+      - echo "1. Please edit the .env file"
+      - echo "2. Place Google authentication file at fitlog/auth/client_secret.json"
+      - echo "3. Run 'task run-dry' to verify operation"
+
+  # Help
+  help:
+    desc: "Show help"
+    cmds:
+      - echo "🔧 fitlog - Google Fit Health Data Tracker"
+      - echo ""
+      - echo "📋 Main commands:"
+      - echo "  task setup      - Initial setup"
+      - echo "  task fmt        - Format code"
+      - echo "  task lint       - Check code"
+      - echo "  task test       - Run tests"
+      - echo "  task run        - Execute data fetching"
+      - echo "  task docker-up  - Start Docker"
+      - echo "  task quickstart - Quick start"
+      - echo ""
+      - echo "📖 Details: task --list"
