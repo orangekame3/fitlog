@@ -19,21 +19,58 @@ A personal health data tracking system that fetches data from Google Fit API, st
 - **Security**: OAuth 2.0 authentication with secure credential management
 - **Automation**: Scheduled data collection with cron jobs
 - **External Access**: Secure remote access via Cloudflare Tunnel
+- **Demo Mode**: Mock data generation for testing and demonstration
 
 ## Architecture
 
+### Production Mode
 ```
 Google Fit API → Python Fetcher → InfluxDB (Docker) → Grafana (Docker) → Cloudflare Tunnel
 ```
 
+### Demo Mode
+```
+Mock Data Generator → InfluxDB (Docker) → Grafana (Docker)
+```
+
 ## Quick Start
 
+### 🎬 Demo Mode (No Authentication Required)
 ```bash
 # Clone the repository
 git clone <repository-url>
 cd fitlog
 
-# Quick setup (installs dependencies and starts services)
+# Automated demo with continuous mock data generation
+task demo
+
+# Quick demo with immediate mock data
+task demo-quick
+
+# Access Grafana at http://localhost:3000
+# Login: admin / fitlogdemo2024
+```
+
+### Option 1: Docker-only (Recommended)
+```bash
+# Clone the repository
+git clone <repository-url>
+cd fitlog
+
+# Docker quick setup
+task quickstart-docker
+
+# Run data fetching in container
+task docker-run-fetch-dry
+```
+
+### Option 2: Local development
+```bash
+# Clone the repository
+git clone <repository-url>
+cd fitlog
+
+# Local quick setup (installs dependencies and starts services)
 task quickstart
 
 # View available tasks
@@ -85,6 +122,34 @@ task help
 
 ### Data Collection
 
+#### Docker execution (Recommended)
+```bash
+# Fetch data (default: last 24 hours)
+task docker-run-fetch
+
+# Fetch data for specific days
+task docker-run-fetch-days DAYS=7
+
+# Dry run (no database writes)
+task docker-run-fetch-dry
+```
+
+#### Mock data (for testing/demo)
+```bash
+# Generate mock health data
+task mock
+
+# Generate mock data for specific days
+task mock DAYS=14
+
+# Show mock data without writing to database
+task mock-dry
+
+# Generate mock data in Docker
+task docker-mock
+```
+
+#### Local execution
 ```bash
 # Fetch data (default: last 24 hours)
 task run
@@ -117,18 +182,40 @@ task test-cov
 
 ### Docker Management
 
+#### Demo Environment
 ```bash
-# Start services
+# Start demo services (automated mock data)
+task demo-up
+
+# Stop demo services
+task demo-down
+
+# View demo logs
+task demo-logs
+
+# Check demo status
+task demo-status
+```
+
+#### Production Environment
+```bash
+# Start production services
 task docker-up
 
-# Stop services
+# Stop production services
 task docker-down
 
-# View logs
+# Build fitlog image
+task docker-build
+
+# View production logs
 task docker-logs
 
-# Check status
+# Check production status
 task docker-status
+
+# Execute commands in production container
+task docker-exec CMD="python --version"
 ```
 
 ### Monitoring

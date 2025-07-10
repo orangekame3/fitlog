@@ -19,21 +19,58 @@ Google Fit APIからヘルスデータを取得し、InfluxDBに保存、Grafana
 - **セキュリティ**: OAuth 2.0認証と安全な認証情報管理
 - **自動化**: cronジョブによるスケジュール実行
 - **外部アクセス**: Cloudflare Tunnelによる安全なリモートアクセス
+- **デモモード**: テストやデモンストレーション用のモックデータ生成
 
 ## システム構成
 
+### 本番モード
 ```
 Google Fit API → Python取得スクリプト → InfluxDB (Docker) → Grafana (Docker) → Cloudflare Tunnel
 ```
 
+### デモモード
+```
+モックデータジェネレーター → InfluxDB (Docker) → Grafana (Docker)
+```
+
 ## クイックスタート
 
+### 🎬 デモモード（認証不要）
 ```bash
 # リポジトリをクローン
 git clone <repository-url>
 cd fitlog
 
-# クイックセットアップ（依存関係インストールとサービス起動）
+# 自動モックデータ生成付きデモ
+task demo
+
+# 即座モックデータ付きクイックデモ
+task demo-quick
+
+# http://localhost:3000 でGrafanaにアクセス
+# ログイン: admin / fitlogdemo2024
+```
+
+### オプション1: Dockerのみ（推奨）
+```bash
+# リポジトリをクローン
+git clone <repository-url>
+cd fitlog
+
+# Dockerクイックセットアップ
+task quickstart-docker
+
+# コンテナでデータ取得実行
+task docker-run-fetch-dry
+```
+
+### オプション2: ローカル開発
+```bash
+# リポジトリをクローン
+git clone <repository-url>
+cd fitlog
+
+# ローカルクイックセットアップ（依存関係インストールとサービス起動）
 task quickstart
 
 # 利用可能なタスクを表示
@@ -85,6 +122,34 @@ task help
 
 ### データ収集
 
+#### Docker実行（推奨）
+```bash
+# データ取得（デフォルト: 過去24時間）
+task docker-run-fetch
+
+# 指定日数分のデータ取得
+task docker-run-fetch-days DAYS=7
+
+# ドライラン（データベースへの書き込みなし）
+task docker-run-fetch-dry
+```
+
+#### モックデータ（テスト・デモ用）
+```bash
+# モックヘルスデータを生成
+task mock
+
+# 指定日数分のモックデータを生成
+task mock DAYS=14
+
+# データベースに書き込まずにモックデータを表示
+task mock-dry
+
+# Dockerでモックデータを生成
+task docker-mock
+```
+
+#### ローカル実行
 ```bash
 # データ取得（デフォルト: 過去24時間）
 task run
@@ -117,18 +182,40 @@ task test-cov
 
 ### Docker管理
 
+#### デモ環境
 ```bash
-# サービス開始
+# デモサービス開始（自動モックデータ）
+task demo-up
+
+# デモサービス停止
+task demo-down
+
+# デモログ表示
+task demo-logs
+
+# デモ状態確認
+task demo-status
+```
+
+#### 本番環境
+```bash
+# 本番サービス開始
 task docker-up
 
-# サービス停止
+# 本番サービス停止
 task docker-down
 
-# ログ表示
+# fitlogイメージビルド
+task docker-build
+
+# 本番ログ表示
 task docker-logs
 
-# 状態確認
+# 本番状態確認
 task docker-status
+
+# 本番コンテナでコマンド実行
+task docker-exec CMD="python --version"
 ```
 
 ### モニタリング

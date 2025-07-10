@@ -62,9 +62,9 @@ fitlog/auth/credentials.json
 influxdb-data/
 influxdb-config/
 
-# Grafana data
+# Grafana data (exclude user data but include demo provisioning)
 grafana-data/
-grafana/provisioning/
+# Note: grafana/provisioning/ contains demo configuration and should be committed
 
 # Logs
 logs/

@@ -1,4 +1,33 @@
+# Production compose configuration - requires Google Fit API setup
+# Use this for actual health data collection from Google Fit
+
 services:
+  fitlog:
+    build: .
+    container_name: fitlog-prod
+    restart: unless-stopped
+    volumes:
+      - ./fitlog/auth:/app/auth
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    environment:
+      - TZ=${TIMEZONE:-Asia/Tokyo}
+      - PRODUCTION_MODE=true
+    depends_on:
+      - influxdb
+    networks:
+      - fitlog-network
+    # Manual execution mode by default
+    # Uncomment below for automated hourly data collection:
+    # command: |
+    #   sh -c 'while true; do
+    #     echo "📊 Fetching Google Fit data..."
+    #     python -m fitlog.fetch --days 1
+    #     echo "⏰ Next fetch in 1 hour..."
+    #     sleep 3600
+    #   done'
+    command: tail -f /dev/null
+
   influxdb:
     image: influxdb:2.7
     container_name: fitlog-influxdb

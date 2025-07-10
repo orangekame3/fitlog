@@ -245,7 +245,7 @@ tasks:
   version:
     desc: "Show current version"
     cmds:
-      - echo "Project{{":"}} fitlog"
+      - 'echo "Project: fitlog"'
       - uv --version
       - uv run python --version
 
@@ -298,9 +298,9 @@ tasks:
       - task: demo-up
       - echo "⏳ Waiting for services to start..."
       - sleep 15
-      - echo '🎉 Demo completed!'
-      - echo '📊 Access Grafana at http://localhost:3000'
-      - echo '👤 Login admin/fitlogdemo2024'
+      - echo "🎉 Demo completed!"
+      - echo "📊 Access Grafana at http://localhost:3000"
+      - echo "👤 Login: admin / fitlogdemo2024"
       - echo "📈 Mock health data is being generated automatically every hour"
       - echo "📋 Use 'task demo-logs' to see the data generation process"
 
@@ -313,32 +313,31 @@ tasks:
       - sleep 15
       - task: demo-mock
       - echo "🎉 Demo completed with immediate data!"
-      - echo '📊 Access Grafana at http://localhost:3000'
-      - echo '👤 Login admin/fitlogdemo2024'
+      - echo "📊 Access Grafana at http://localhost:3000"
+      - echo "👤 Login: admin / fitlogdemo2024"
 
   # Help
   help:
     desc: "Show help"
     cmds:
-      - |
-        echo "🔧 fitlog - Google Fit Health Data Tracker"
-        echo ""
-        echo "🎆 Demo commands:"
-        echo "  task demo       - Automated demo with continuous mock data"
-        echo "  task demo-quick - Quick demo with immediate mock data"
-        echo "  task demo-up    - Start demo services"
-        echo "  task demo-down  - Stop demo services"
-        echo "  task demo-logs  - View demo logs"
-        echo ""
-        echo "💼 Production commands:"
-        echo "  task quickstart-docker - Production Docker setup"
-        echo "  task docker-up         - Start production services"
-        echo "  task docker-run-fetch  - Fetch real Google Fit data"
-        echo ""
-        echo "📋 Development commands:"
-        echo "  task setup      - Initial setup"
-        echo "  task fmt        - Format code"
-        echo "  task lint       - Check code"
-        echo "  task test       - Run tests"
-        echo ""
-        echo "📖 Details: task --list"
+      - echo "🔧 fitlog - Google Fit Health Data Tracker"
+      - echo ""
+      - echo "🎆 Demo commands:"
+      - echo "  task demo       - Automated demo with continuous mock data"
+      - echo "  task demo-quick - Quick demo with immediate mock data"
+      - echo "  task demo-up    - Start demo services"
+      - echo "  task demo-down  - Stop demo services"
+      - echo "  task demo-logs  - View demo logs"
+      - echo ""
+      - echo "💼 Production commands:"
+      - echo "  task quickstart-docker - Production Docker setup"
+      - echo "  task docker-up         - Start production services"
+      - echo "  task docker-run-fetch  - Fetch real Google Fit data"
+      - echo ""
+      - echo "📋 Development commands:"
+      - echo "  task setup      - Initial setup"
+      - echo "  task fmt        - Format code"
+      - echo "  task lint       - Check code"
+      - echo "  task test       - Run tests"
+      - echo ""
+      - echo "📖 Details: task --list"

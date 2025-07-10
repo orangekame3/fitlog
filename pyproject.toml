@@ -26,12 +26,13 @@ dev = [
     "pytest-cov>=4.0.0",
     "pytest-watch>=4.2.0",
     "ruff>=0.1.0",
-    "ty>=0.7.0",
+    "ty>=0.0.1a14",
 ]
 
 [project.scripts]
 fitlog-fetch = "fitlog.fetch:main"
 fitlog-influx-test = "fitlog.influx_writer:main"
+fitlog-mock = "fitlog.mock_data:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -43,7 +44,7 @@ dev-dependencies = [
     "pytest-cov>=4.0.0",
     "pytest-watch>=4.2.0",
     "ruff>=0.1.0",
-    "ty>=0.7.0",
+    "ty>=0.0.1a14",
 ]
 
 [tool.ruff]
@@ -94,3 +95,6 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "--cov=fitlog --cov-report=html --cov-report=term-missing --tb=short"
 minversion = "6.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["fitlog"]
