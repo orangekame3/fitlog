@@ -124,12 +124,12 @@ tasks:
   demo-up:
     desc: "Start demo services with automated mock data"
     cmds:
-      - docker compose -f compose.demo.yaml up -d
+      - docker compose -f compose.demo.pi.yaml up -d
 
   demo-down:
     desc: "Stop demo services"
     cmds:
-      - docker compose -f compose.demo.yaml down
+      - docker compose -f compose.demo.pi.yaml down
 
   demo-logs:
     desc: "Show demo Docker Compose logs"
@@ -149,7 +149,7 @@ tasks:
   demo-build:
     desc: "Build fitlog Docker image (demo)"
     cmds:
-      - docker compose -f compose.demo.yaml build fitlog-demo
+      - docker compose -f compose.demo.pi.yaml build fitlog-demo
 
   docker-exec:
     desc: "Execute command in production fitlog container"
